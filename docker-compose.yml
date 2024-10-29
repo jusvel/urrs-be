@@ -1,0 +1,21 @@
+version: '3.5'
+
+services:
+
+  db:
+    container_name: databaseForEvents
+    image: postgres:15.3-alpine
+
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - "./pg-init.sql:/docker-entrypoint-initdb.d/master_db_init.sql"
+    environment:
+      - POSTGRES_PASSWORD=pass
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=dbuser
+    ports:
+      - "5433:5432"
+
+volumes:
+  pgdata:
+
