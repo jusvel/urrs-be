@@ -22,4 +22,24 @@ public class EventService {
         Long userId = userService.getCurrentUserId();
         eventAttendeesRepository.registerForEvent(eventId, userId);
     }
+
+    public void unregisterFromEvent(Long eventId) {
+        Long userId = userService.getCurrentUserId();
+        eventAttendeesRepository.unregisterFromEvent(eventId, userId);
+    }
+
+    public List<EventDto> getRegisteredEvents() {
+        Long userId = userService.getCurrentUserId();
+        return eventRepository.getRegisteredEvents(userId);
+    }
+
+    public boolean isRegisteredToEvent(Long eventId) {
+        Long userId = userService.getCurrentUserId();
+        List<EventDto> eventDtos = eventRepository.isRegisteredToEvent(userId, eventId);
+        if(eventDtos.size()>0){
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

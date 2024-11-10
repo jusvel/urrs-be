@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Data
@@ -14,7 +15,7 @@ public class EventDto {
     private String title;
     private String description;
     private String location;
-    private LocalDateTime eventDate;
-    private LocalDateTime createdOn;
+    private Timestamp eventDate;
+    private Timestamp createdOn;
     private int userId;
 }
