@@ -1,9 +1,9 @@
 package com.example.events.controllers;
 
 import com.example.events.dto.EventDto;
+import com.example.events.dto.EventRequestDto;
 import com.example.events.services.EventService;
 import lombok.RequiredArgsConstructor;
-import org.apache.ibatis.annotations.Delete;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,6 +16,9 @@ public class EventController {
 
     @GetMapping
     public List<EventDto> getEvents() { return eventService.getEvents(); }
+
+    @PostMapping
+    public void createEvent(@RequestBody EventRequestDto eventRequestDto) { eventService.createEvent(eventRequestDto); }
 
     @PostMapping("/register/{eventId}")
     public void registerForEvent(@PathVariable Long eventId) {

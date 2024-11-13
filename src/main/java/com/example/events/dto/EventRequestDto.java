@@ -6,15 +6,13 @@ import lombok.Data;
 
 import java.sql.Timestamp;
 
-    @Data
-    @AllArgsConstructor
-    @Builder
-public class EventDto {
-    private int id;
+
+@Data
+@AllArgsConstructor
+@Builder
+public class EventRequestDto {
     private String title;
     private String description;
     private String location;
-    private Timestamp eventDate;
-    private Timestamp createdOn;
-    private int userId;
+    private String eventDate;
 }
