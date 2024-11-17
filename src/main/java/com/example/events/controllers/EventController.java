@@ -20,19 +20,8 @@ public class EventController {
     @PostMapping
     public void createEvent(@RequestBody EventRequestDto eventRequestDto) { eventService.createEvent(eventRequestDto); }
 
-    @PostMapping("/register/{eventId}")
-    public void registerForEvent(@PathVariable Long eventId) {
-        eventService.registerForEvent(eventId);
-    }
-
-    @DeleteMapping("/register/{eventId}")
-    public void unregisterFromEvent(@PathVariable Long eventId) {
-        eventService.unregisterFromEvent(eventId);
-    }
-
     @GetMapping("/registered")
     public List<EventDto> getRegisteredEvents() {return eventService.getRegisteredEvents(); }
 
-    @GetMapping("/registered/{eventId}")
-    public boolean isRegisteredToEvent(@PathVariable Long eventId) { return eventService.isRegisteredToEvent(eventId); }
+
 }

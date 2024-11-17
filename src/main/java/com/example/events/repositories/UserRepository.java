@@ -1,6 +1,7 @@
 package com.example.events.repositories;
 
 import com.example.events.dto.UserDto;
+import com.example.events.dto.UserResponseDto;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -16,4 +17,7 @@ public interface UserRepository {
 
     @Insert("INSERT INTO users (first_name, last_name, email, password) VALUES (#{firstName}, #{lastName}, #{email}, #{token})")
     void save(UserDto userDto);
+
+    @Select("SELECT id, first_name, last_name, email FROM users WHERE id = #{userId}")
+    UserResponseDto getUserById(Long userId);
 }
