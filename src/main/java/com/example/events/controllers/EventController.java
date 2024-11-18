@@ -4,6 +4,7 @@ import com.example.events.dto.EventDto;
 import com.example.events.dto.EventRequestDto;
 import com.example.events.services.EventService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,6 +18,7 @@ public class EventController {
     @GetMapping
     public List<EventDto> getEvents() { return eventService.getEvents(); }
 
+    @PreAuthorize("hasRole('ORGANIZER')")
     @PostMapping
     public void createEvent(@RequestBody EventRequestDto eventRequestDto) { eventService.createEvent(eventRequestDto); }
 

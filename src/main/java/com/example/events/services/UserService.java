@@ -31,6 +31,7 @@ public class UserService {
                     .lastName(userDto.getLastName())
                     .email(userDto.getEmail())
                     .token(userDto.getToken())
+                    .role(userDto.getRole())
                     .build();
         }
         throw new AppException("Invalid password", HttpStatus.BAD_REQUEST);

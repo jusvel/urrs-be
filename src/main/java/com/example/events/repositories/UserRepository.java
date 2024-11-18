@@ -12,12 +12,12 @@ import java.util.Optional;
 @Mapper
 @Repository
 public interface UserRepository {
-    @Select("SELECT * FROM users WHERE email = #{login}")
+    @Select("select u.id, u.first_name, u.last_name, u.email, u.password, r.role_name from users u INNER JOIN roles r ON u.role = r.id WHERE email = #{login}")
     Optional<UserDto> findByLogin(String login);
 
     @Insert("INSERT INTO users (first_name, last_name, email, password, role) VALUES (#{firstName}, #{lastName}, #{email}, #{token}, 0)")
     void save(UserDto userDto);
 
-    @Select("SELECT id, first_name, last_name, email, role FROM users WHERE id = #{userId}")
+    @Select("SELECT u.id, u.first_name, u.last_name, u.email, r.role_name FROM users u INNER JOIN roles r ON u.role = r.id WHERE u.id = #{userId}")
     UserResponseDto getUserById(Long userId);
 }

@@ -1,6 +1,5 @@
 package com.example.events.config;
 
-import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -31,6 +30,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                     SecurityContextHolder.getContext().setAuthentication(
                             userAuthProvider.validateToken(elements[1])
                     );
+
                 } catch (RuntimeException e) {
                     SecurityContextHolder.clearContext();
                     throw e;
