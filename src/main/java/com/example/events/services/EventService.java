@@ -18,6 +18,13 @@ public class EventService {
 
     public List<EventDto> getEvents() { return eventRepository.getEvents(); }
 
+    public void deleteEvent(Long eventId) { eventRepository.deleteEvent(eventId); }
+
+    public void updateEvent(Long eventId,EventRequestDto eventRequestDto) {
+        Timestamp eventDate = Timestamp.valueOf(eventRequestDto.getEventDate());
+        eventRepository.updateEvent(eventId, eventRequestDto.getTitle(), eventRequestDto.getDescription(), eventRequestDto.getLocation(), eventDate);
+    }
+
     public void createEvent(EventRequestDto eventRequestDto) {
         Timestamp createdOn = Timestamp.from(Instant.now());
         Timestamp eventDate = Timestamp.valueOf(eventRequestDto.getEventDate());

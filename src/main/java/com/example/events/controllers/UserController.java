@@ -21,4 +21,7 @@ public class UserController {
     public List<UserResponseDto> getUsers () {
         return userService.getUsers();
     }
+
+    @GetMapping("/current")
+    public Long getCurrentUserId () {return userService.getCurrentUserId();}
 }

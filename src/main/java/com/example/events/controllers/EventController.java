@@ -16,14 +16,30 @@ public class EventController {
     private final EventService eventService;
 
     @GetMapping
-    public List<EventDto> getEvents() { return eventService.getEvents(); }
+    public List<EventDto> getEvents() {
+        return eventService.getEvents();
+    }
 
     @PreAuthorize("hasRole('ORGANIZER')")
     @PostMapping
-    public void createEvent(@RequestBody EventRequestDto eventRequestDto) { eventService.createEvent(eventRequestDto); }
+    public void createEvent(@RequestBody EventRequestDto eventRequestDto) {
+        eventService.createEvent(eventRequestDto);
+    }
 
     @GetMapping("/registered")
-    public List<EventDto> getRegisteredEvents() {return eventService.getRegisteredEvents(); }
+    public List<EventDto> getRegisteredEvents() {
+        return eventService.getRegisteredEvents();
+    }
 
+    @PreAuthorize("hasRole('ORGANIZER')")
+    @DeleteMapping("/{eventId}")
+    public void deleteEvent(@PathVariable Long eventId) {
+        eventService.deleteEvent(eventId);
+    }
 
+    @PreAuthorize("hasRole('ORGANIZER')")
+    @PutMapping("/{eventId}")
+    public void updateEvent(@PathVariable Long eventId, @RequestBody EventRequestDto eventRequestDto) {
+        eventService.updateEvent(eventId, eventRequestDto);
+    }
 }
