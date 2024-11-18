@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Mapper
@@ -20,4 +21,7 @@ public interface UserRepository {
 
     @Select("SELECT u.id, u.first_name, u.last_name, u.email, r.role_name FROM users u INNER JOIN roles r ON u.role = r.id WHERE u.id = #{userId}")
     UserResponseDto getUserById(Long userId);
+
+    @Select("SELECT u.id, u.first_name, u.last_name, u.email, r.role_name from users u INNER JOIN roles r ON u.role = r.id")
+    List<UserResponseDto> getUsers();
 }

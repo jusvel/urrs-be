@@ -3,6 +3,7 @@ package com.example.events.services;
 import com.example.events.dto.CredentialsDto;
 import com.example.events.dto.SignUpDto;
 import com.example.events.dto.UserDto;
+import com.example.events.dto.UserResponseDto;
 import com.example.events.exceptions.AppException;
 import com.example.events.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.nio.CharBuffer;
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -73,5 +75,9 @@ public class UserService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserDto userDto = (UserDto) authentication.getPrincipal();
         return userDto.getId();
+    }
+
+    public List<UserResponseDto> getUsers () {
+        return userRepository.getUsers();
     }
 }
