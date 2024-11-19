@@ -1,0 +1,8 @@
+zonky:
+  test:
+    database:
+      provider: ZONKY
+      postgres:
+        client:
+          properties:
+            currentSchema: app
