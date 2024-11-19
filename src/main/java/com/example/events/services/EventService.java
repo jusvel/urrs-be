@@ -22,7 +22,7 @@ public class EventService {
 
     public void updateEvent(Long eventId,EventRequestDto eventRequestDto) {
         Timestamp eventDate = Timestamp.valueOf(eventRequestDto.getEventDate());
-        eventRepository.updateEvent(eventId, eventRequestDto.getTitle(), eventRequestDto.getDescription(), eventRequestDto.getLocation(), eventDate);
+        eventRepository.updateEvent(eventId, eventRequestDto.getTitle(), eventRequestDto.getDescription(), eventRequestDto.getLocation(), eventRequestDto.getEventType(), eventDate);
     }
 
     public void createEvent(EventRequestDto eventRequestDto) {
@@ -33,6 +33,7 @@ public class EventService {
                 .title(eventRequestDto.getTitle())
                 .description(eventRequestDto.getDescription())
                 .location(eventRequestDto.getLocation())
+                .eventType(eventRequestDto.getEventType())
                 .eventDate(eventDate)
                 .createdOn(createdOn)
                 .userId(userId)
