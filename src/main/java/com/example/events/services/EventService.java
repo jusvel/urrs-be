@@ -2,12 +2,14 @@ package com.example.events.services;
 
 import com.example.events.dto.EventDto;
 import com.example.events.dto.EventRequestDto;
+import com.example.events.model.EventType;
 import com.example.events.repositories.EventRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -22,7 +24,7 @@ public class EventService {
 
     public void updateEvent(Long eventId,EventRequestDto eventRequestDto) {
         Timestamp eventDate = Timestamp.valueOf(eventRequestDto.getEventDate());
-        eventRepository.updateEvent(eventId, eventRequestDto.getTitle(), eventRequestDto.getDescription(), eventRequestDto.getLocation(), eventDate);
+        eventRepository.updateEvent(eventId, eventRequestDto.getTitle(), eventRequestDto.getDescription(), eventRequestDto.getLocation(), eventRequestDto.getEventType(), eventDate);
     }
 
     public void createEvent(EventRequestDto eventRequestDto) {
@@ -33,6 +35,7 @@ public class EventService {
                 .title(eventRequestDto.getTitle())
                 .description(eventRequestDto.getDescription())
                 .location(eventRequestDto.getLocation())
+                .eventType(eventRequestDto.getEventType())
                 .eventDate(eventDate)
                 .createdOn(createdOn)
                 .userId(userId)
@@ -46,5 +49,7 @@ public class EventService {
         return eventRepository.getRegisteredEvents(userId);
     }
 
-
+    public List<EventType> getEventTypes() {
+        return Arrays.stream(EventType.values()).toList();
+    }
 }

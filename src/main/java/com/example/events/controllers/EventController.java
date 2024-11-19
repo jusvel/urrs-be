@@ -2,6 +2,7 @@ package com.example.events.controllers;
 
 import com.example.events.dto.EventDto;
 import com.example.events.dto.EventRequestDto;
+import com.example.events.model.EventType;
 import com.example.events.services.EventService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -42,4 +43,7 @@ public class EventController {
     public void updateEvent(@PathVariable Long eventId, @RequestBody EventRequestDto eventRequestDto) {
         eventService.updateEvent(eventId, eventRequestDto);
     }
+
+    @GetMapping("/types")
+    public List<EventType> getEventTypes() { return eventService.getEventTypes(); }
 }
