@@ -2,12 +2,14 @@ package com.example.events.services;
 
 import com.example.events.dto.EventDto;
 import com.example.events.dto.EventRequestDto;
+import com.example.events.model.EventType;
 import com.example.events.repositories.EventRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -47,5 +49,7 @@ public class EventService {
         return eventRepository.getRegisteredEvents(userId);
     }
 
-
+    public List<EventType> getEventTypes() {
+        return Arrays.stream(EventType.values()).toList();
+    }
 }
