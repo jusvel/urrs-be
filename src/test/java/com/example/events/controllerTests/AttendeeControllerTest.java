@@ -2,28 +2,19 @@ package com.example.events.controllerTests;
 
 import com.example.events.controllers.AttendeeController;
 import com.example.events.dto.UserResponseDto;
-import com.example.events.repositories.AttendeeRepository;
-import com.example.events.repositories.UserRepository;
 import com.example.events.services.AttendeeService;
-import com.example.events.services.UserService;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -34,14 +25,6 @@ public class AttendeeControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
-    @MockBean
-    private AttendeeRepository attendeeRepository;
-
-    @MockBean
-    private UserRepository userRepository;
-
-    @MockBean
-    private UserService userService;
 
     @MockBean
     private AttendeeService attendeeService;
@@ -78,13 +61,11 @@ public class AttendeeControllerTest {
     void testUnregisterFromEvent() throws Exception {
         Long eventId = 1L;
 
-        // Mock the service call to unregister a user from the event
-        when(attendeeService.isRegisteredToEvent(eventId)).thenReturn(true); // Assume user is registered
+        when(attendeeService.isRegisteredToEvent(eventId)).thenReturn(true);
 
         mockMvc.perform(delete("/attendees/register/{eventId}", eventId))
                 .andExpect(status().isOk());
 
-        // Verify that the service method was called
         verify(attendeeService).unregisterFromEvent(eventId);
     }
 
@@ -93,13 +74,11 @@ public class AttendeeControllerTest {
     void testRegisterFromEvent() throws Exception {
         Long eventId = 1L;
 
-        // Mock the service call to unregister a user from the event
-        when(attendeeService.isRegisteredToEvent(eventId)).thenReturn(false); // Assume user is registered
+        when(attendeeService.isRegisteredToEvent(eventId)).thenReturn(false);
 
         mockMvc.perform(post("/attendees/register/{eventId}", eventId))
                 .andExpect(status().isOk());
 
-        // Verify that the service method was called
         verify(attendeeService).registerForEvent(eventId);
     }
 
@@ -111,6 +90,6 @@ public class AttendeeControllerTest {
 
         mockMvc.perform(get("/attendees/registered/{eventId}", eventId))
                 .andExpect(status().isOk())
-                .andExpect(content().string("true")); // Expecting a boolean value as a string
+                .andExpect(content().string("true"));
     }
 }
