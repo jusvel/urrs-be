@@ -25,8 +25,8 @@ public class UserService {
 
     public UserDto login(CredentialsDto credentialsDto) {
         UserDto userDto = userRepository.findByLogin(credentialsDto.getLogin())
-                .orElseThrow(()-> new AppException("Unknown user", HttpStatus.NOT_FOUND));
-        if(passwordEncoder.matches(CharBuffer.wrap(credentialsDto.getPassword()), userDto.getToken())) {
+                .orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND));
+        if (passwordEncoder.matches(CharBuffer.wrap(credentialsDto.getPassword()), userDto.getToken())) {
             return userDto.builder()
                     .id(userDto.getId())
                     .firstName(userDto.getFirstName())
@@ -39,16 +39,16 @@ public class UserService {
         throw new AppException("Invalid password", HttpStatus.BAD_REQUEST);
     }
 
-    public UserDto register(SignUpDto signUpDto){
+    public UserDto register(SignUpDto signUpDto) {
         Optional<UserDto> optionalUserDto = userRepository.findByLogin(signUpDto.getEmail());
 
-        if(optionalUserDto.isPresent()) {
+        if (optionalUserDto.isPresent()) {
             throw new AppException("Login already exists", HttpStatus.BAD_REQUEST);
         }
 
 
         UserDto user = UserDto.builder()
-        .firstName(signUpDto.getFirstName())
+                .firstName(signUpDto.getFirstName())
                 .lastName(signUpDto.getLastName())
                 .email(signUpDto.getEmail())
                 .token(passwordEncoder.encode(CharBuffer.wrap(signUpDto.getPassword())))
@@ -61,7 +61,7 @@ public class UserService {
 
     public UserDto findByLogin(String login) {
         UserDto userDto = userRepository.findByLogin(login)
-                .orElseThrow(()-> new AppException("Unknown user", HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND));
         return userDto.builder()
                 .id(userDto.getId())
                 .firstName(userDto.getFirstName())
@@ -71,13 +71,23 @@ public class UserService {
                 .build();
     }
 
-    public Long getCurrentUserId () {
+    public Long getCurrentUserId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserDto userDto = (UserDto) authentication.getPrincipal();
         return userDto.getId();
     }
 
-    public List<UserResponseDto> getUsers () {
-        return userRepository.getUsers();
+    public List<UserResponseDto> getUsers() {
+        Long currentUserId = getCurrentUserId();
+        return userRepository.getUsers(currentUserId);
+    }
+
+    public List<String> getRoles() {
+        return userRepository.getRoles();
+    }
+
+    public void updateRole(String role, Long userId) {
+        int roleId = userRepository.getRoleIdByName(role);
+        userRepository.updateUserRole(roleId, userId);
     }
 }

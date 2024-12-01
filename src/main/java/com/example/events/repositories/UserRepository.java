@@ -5,6 +5,7 @@ import com.example.events.dto.UserResponseDto;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -22,6 +23,15 @@ public interface UserRepository {
     @Select("SELECT u.id, u.first_name, u.last_name, u.email, r.role_name FROM users u INNER JOIN roles r ON u.role = r.id WHERE u.id = #{userId}")
     UserResponseDto getUserById(Long userId);
 
-    @Select("SELECT u.id, u.first_name, u.last_name, u.email, r.role_name from users u INNER JOIN roles r ON u.role = r.id")
-    List<UserResponseDto> getUsers();
+    @Select("SELECT u.id, u.first_name, u.last_name, u.email, r.role_name from users u INNER JOIN roles r ON u.role = r.id WHERE u.id != #{userId}")
+    List<UserResponseDto> getUsers(Long currentUserId);
+
+    @Select("SELECT role_name FROM roles")
+    List<String> getRoles();
+
+    @Update("UPDATE users SET role = #{roleId} WHERE id = #{userId}")
+    void updateUserRole(int roleId, Long userId);
+
+    @Select("SELECT id from roles where role_name = #{roleName}")
+    int getRoleIdByName(String roleName);
 }
