@@ -5,9 +5,14 @@ import com.example.events.dto.EventRequestDto;
 import com.example.events.model.EventType;
 import com.example.events.services.EventService;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.ByteArrayInputStream;
 import java.util.List;
 
 @RestController
@@ -46,4 +51,14 @@ public class EventController {
 
     @GetMapping("/types")
     public List<EventType> getEventTypes() { return eventService.getEventTypes(); }
+
+    @PreAuthorize("hasRole('ORGANIZER')")
+    @GetMapping("/{eventId}/export")
+    public ResponseEntity<InputStreamResource> exportEventDetails(@PathVariable long eventId) {
+        ByteArrayInputStream excelFile = eventService.generateEventExcel(eventId);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Disposition", "attachment; filename=event_" + eventId + ".xlsx");
+        return ResponseEntity.ok().headers(headers).body(new InputStreamResource(excelFile));
+    }
+
 }

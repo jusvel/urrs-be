@@ -15,6 +15,9 @@ public interface EventRepository {
     @Select("SELECT * FROM events")
     List<EventDto> getEvents();
 
+    @Select("SELECT * FROM events WHERE id = #{eventId}")
+    EventDto getEventById(Long eventId);
+
     @Insert("INSERT INTO events (title, description, location, event_date, created_on, created_by, event_type) values (#{title}, #{description}, #{location}, #{eventDate}, #{createdOn}, #{userId}, #{eventType})")
     @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
     void createEvent(EventDto eventDto);

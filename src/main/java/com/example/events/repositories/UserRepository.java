@@ -34,4 +34,7 @@ public interface UserRepository {
 
     @Select("SELECT id from roles where role_name = #{roleName}")
     int getRoleIdByName(String roleName);
+
+    @Select("SELECT u.id, u.first_name, u.last_name, u.email, u.role FROM users u WHERE u.id IN (SELECT user_id FROM event_attendees WHERE event_id = #{eventId})")
+    List<UserResponseDto> getUsersByEventId(Long eventId);
 }
