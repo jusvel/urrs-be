@@ -23,6 +23,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
 
@@ -36,6 +38,18 @@ public class EventService {
 
     public List<EventDto> getEvents() {
         return eventRepository.getEvents();
+    }
+    public List<EventDto> getEventsByFilter(EventRequestDto requestDto) {
+        // Parse eventDate as LocalDate (ignoring the time)
+        LocalDate parsedDate = requestDto.getEventDate() != null
+                ? LocalDate.parse(requestDto.getEventDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+                : null;
+
+        return eventRepository.getEventsByFilter(
+                requestDto.getTitle(),
+                parsedDate,
+                requestDto.getEventType()
+        );
     }
 
     public void deleteEvent(Long eventId) {

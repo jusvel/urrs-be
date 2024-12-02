@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import java.sql.Timestamp;
@@ -50,6 +51,21 @@ public class EventControllerTest {
         event2 = new EventDto(2, "Event 2", "Description 2", "Location 2", currentTimestamp, currentTimestamp, 2, eventType);
 
         eventRequestDto = new EventRequestDto("Event 3", "Description 3", "Location 3", "2024-01-01", eventType);
+    }
+    @Test
+    void testGetEventsByFilter() throws Exception {
+
+        List<EventDto> registeredEvents = Arrays.asList(event1);
+        EventRequestDto eventRequestDto1 = eventRequestDto;
+
+        when(eventService.getEventsByFilter(eventRequestDto1)).thenReturn(registeredEvents);
+
+        mockMvc.perform(post("/events/filter")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(new ObjectMapper().writeValueAsString(eventRequestDto1)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id").value(1))
+                .andExpect(jsonPath("$[0].title").value("Event 1"));
     }
 
     @Test
