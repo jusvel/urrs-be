@@ -65,4 +65,30 @@ public class UserControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(expectedUserId.toString()));
     }
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    void testGetRoles() throws Exception {
+        List<String> roles = Arrays.asList("USER", "ATTENDEE", "ORGANISER");
+        when(userService.getRoles()).thenReturn(roles);
+
+        mockMvc.perform(get("/users/roles"))
+                .andExpect(status().isOk())
+                .andExpect(content().json("[\"USER\",\"ATTENDEE\",\"ORGANISER\"]"));
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    void testUpdateRole() throws Exception {
+        Long userId = 1L;
+        String roleNameJson = "{\"roleName\":\"USER\"}";
+
+        mockMvc.perform(put("/users/" + userId)
+                        .contentType("application/json")
+                        .content(roleNameJson))
+                .andExpect(status().isOk());
+        
+        verify(userService, times(1)).updateRole("USER", userId);
+    }
+
+
 }
