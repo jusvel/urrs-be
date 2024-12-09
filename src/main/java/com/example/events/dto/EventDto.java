@@ -19,4 +19,5 @@ public class EventDto {
     private Timestamp createdOn;
     private int userId;
     private EventType eventType;
+    private Timestamp registrationEnd;
 }
